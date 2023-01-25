@@ -1,4 +1,12 @@
-import { Typography, Box, Tabs, Tab, Select, TextField, MenuItem } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Tabs,
+  Tab,
+  Select,
+  TextField,
+  MenuItem,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
 import { SketchPicker } from "react-color";
@@ -36,7 +44,7 @@ function a11yProps(index) {
   };
 }
 
-const CustomColor = ({value}) => {
+const CustomColor = ({ value }) => {
   return (
     <>
       <div className="colors" style={{ backgroundColor: value }}></div>
@@ -156,30 +164,37 @@ export const UiMain = () => {
                   {rows.map((data) => {
                     return (
                       <>
-                      {/* <div className="box"> */}
+                        {/* <div className="box"> */}
                         <div className="main-colorbox">
-                        <CustomColor value={data.color}></CustomColor>
-                        <p className="description-name">{data.name}</p>
+                          <CustomColor value={data.color}></CustomColor>
+                          <p className="description-name">{data.name}</p>
                         </div>
-                      {/* </div> */}
+                        {/* </div> */}
                       </>
                     );
                   })}
-                  <Typography sx={{fontSize:'14px', fontWeight:'bold'}}>Button style</Typography>
-                  <Box>
-                    <TextField>
-                      <MenuItem>wdwd</MenuItem>
-                      <MenuItem>wdwd</MenuItem>
-                      <MenuItem>wdwd</MenuItem>
-                    </TextField>
-                  </Box>
+                  <div  className="b-style">
+                    <span>
+                      <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+                        Button style
+                      </Typography>
+                    </span>
+                    <span className="select-style">
+                      <Box width="500px">
+                        <TextField select size="small">
+                          <MenuItem>Filled</MenuItem>
+                          <MenuItem>Outline</MenuItem>
+                          <MenuItem>Filled/Outline</MenuItem>
+                          <MenuItem>Outline/Filled</MenuItem>
+                        </TextField>
+                      </Box>
+                    </span>
+                  </div>
                 </div>
-                
               </span>
               <span className="right-span">
                 <div className="right-div"></div>
               </span>
-
             </div>
           </TabPanel>
           <TabPanel value={value} index={1}>

@@ -33,22 +33,29 @@ code {
 }
 .main-colorbox{
   float: left;
-  /* border: solid red; */
+  /* border: solid; */
 }
 .colors{
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  
 }
 .box{
   border: solid;
   height: 70px;
   width: 90px;
   float: left;
+  border: solid 4px red;
 }
 .description-name{
   font-size: 13px;
   color: grey;
   text-align: center;
+}
+.b-style{
+  display: flex;
+  flex-direction: row;
+}
+.select-style{
+
 }
