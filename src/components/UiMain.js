@@ -6,6 +6,7 @@ import {
   Select,
   TextField,
   MenuItem,
+  Grid,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
@@ -56,7 +57,7 @@ const CustomColor = ({ value }) => {
 const rows = [
   {
     id: 1,
-    name: "Questions color",
+    name: "Question color",
     color: "#0d0d0d",
   },
   {
@@ -150,61 +151,51 @@ export const UiMain = () => {
                 label="Checklist"
                 {...a11yProps(2)}
               />
-              <Tab
-                sx={{ fontSize: "12px", fontWeight: "bold" }}
-                label="Custom CSS"
-                {...a11yProps(3)}
-              />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <div>
-              <span className="left-span">
-                <div className="left-div">
+            <Grid container>
+              <Grid item xs={5}>
+                <Grid container columns={5}>
                   {rows.map((data) => {
                     return (
                       <>
                         {/* <div className="box"> */}
-                        <div className="main-colorbox">
+                        <Grid item xs={1}>
                           <CustomColor value={data.color}></CustomColor>
                           <p className="description-name">{data.name}</p>
-                        </div>
+                        </Grid>
                         {/* </div> */}
                       </>
                     );
                   })}
-                  <div  className="b-style">
-                    <span>
-                      <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-                        Button style
-                      </Typography>
-                    </span>
-                    <span className="select-style">
-                      <Box width="500px">
-                        <TextField select size="small">
-                          <MenuItem>Filled</MenuItem>
-                          <MenuItem>Outline</MenuItem>
-                          <MenuItem>Filled/Outline</MenuItem>
-                          <MenuItem>Outline/Filled</MenuItem>
-                        </TextField>
-                      </Box>
-                    </span>
+                  <div className="b-style">
+                    <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+                      Button style
+                    </Typography>
+                    <Box>
+                      <TextField select size="small" width="200px" >
+                        <MenuItem>Filled</MenuItem>
+                        <MenuItem>Outline</MenuItem>
+                        <MenuItem>Filled/Outline</MenuItem>
+                        <MenuItem>Outline/Filled</MenuItem>
+                      </TextField>
+                    </Box>
                   </div>
-                </div>
-              </span>
-              <span className="right-span">
-                <div className="right-div"></div>
-              </span>
-            </div>
+                </Grid>
+              </Grid>
+              <Grid item xs={7} sx={{ p: 1 }}>
+              <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+                      Preview
+                    </Typography>
+              </Grid>
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
             Product tour
           </TabPanel>
           <TabPanel value={value} index={2}>
             Checklist
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            Custom CSS
           </TabPanel>
         </Box>
       </div>
