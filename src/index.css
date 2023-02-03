@@ -53,10 +53,58 @@ code {
   color: grey;
   /* text-align: center; */
 }
-.b-style{
+.button-style-div{
   display: flex;
   flex-direction: row;
 }
-.select-style{
+.font-family-div{
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.2em;
+}
+.light-box-color{
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.2em;
+}
+.light-box-blur{
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.2em;
+}
+.button-style{
+ margin-top: 1em;
+}
+.preview-box{
+  width: 730px;
+  height: 500px;
+  background-color: #f0eded;
+}
+.inner-preview-box{
+  top: 47%;
+  left: 51%;
+  padding: 25px;
+  position: absolute;
+  z-index: 20;
+  width: 480px;
+  height: 200px;
+  background-color: white;
+}
+.company-name-div{
+  width: 531px;
+  height: 35px;
+  margin-left: 108px;
+  margin-top: -121px;
+  background-color: #f7f4ed;
 
+}
+.rating-value{
+  display: flex;
+  flex-direction: row;
+}
+.data-value{
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 7px 15px 7px 15px;
+  margin-left: 5px;
 }
