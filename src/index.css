@@ -41,6 +41,11 @@ code {
   width: 50px;
   border-radius: 50%;
 }
+.boxcolor{
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+}
 .box{
   border: solid;
   height: 70px;
@@ -72,6 +77,21 @@ code {
   flex-direction: row;
   margin-top: 1.2em;
 }
+.light-box-opacity{
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.2em;
+}
+.modal-blur{
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.2em;
+}
+.modal-opacity{
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.2em;
+}
 .button-style{
  margin-top: 1em;
 }
@@ -89,6 +109,7 @@ code {
   width: 480px;
   height: 200px;
   background-color: white;
+  /* border: 1px solid; */
 }
 .company-name-div{
   width: 531px;
