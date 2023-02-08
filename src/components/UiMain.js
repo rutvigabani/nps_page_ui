@@ -15,6 +15,7 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import React from "react";
 import { useState } from "react";
 import { SketchPicker } from "react-color";
+import { red } from "@mui/material/colors";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,7 +67,7 @@ const CustomColor = ({ value, onChange }) => {
     <>
       <div
         className="colors"
-        style={{ backgroundColor: value }}
+        style={{ backgroundColor: value, border: "1px solid #f0f0f0" }}
         onClick={handleClick}
       ></div>
       <Popover
@@ -86,14 +87,16 @@ const CustomColor = ({ value, onChange }) => {
 };
 
 export const UiMain = () => {
-  const [value, setValue] = React.useState(0);
-  const [values, setValues] = useState("#fff");
+  const [tabvalue, setTabValue] = React.useState(0);
+  const [values, setValues] = useState("#aba9a4");
   const [buttonstyle, setbuttonstyle] = useState([]);
   const [fontfamily, setfontfamily] = useState("arial");
+  const [clickpopover, setclickpopover] = useState(null);
   const [boxblur, setboxblur] = useState(30);
   const [boxopacity, setboxopacity] = useState(50);
   const [modalblur, setmodalblur] = useState(0);
   const [modalopacity, setmodalopacity] = useState(90);
+
   const [colors, setcolors] = useState([
     {
       id: 0,
@@ -147,39 +150,46 @@ export const UiMain = () => {
     },
   ]);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleChangeTabs = (event, newValue) => {
+    setTabValue(newValue);
   };
-
   const handleColorChange = (inputColor, data) => {
     const Array = [...colors];
     Array[data.id].color = inputColor.hex;
     setcolors(Array);
     setValues(inputColor.hex);
   };
-
   const handleButtonStyle = (e) => {
     setbuttonstyle(e.target.value);
   };
-
   const handleFontFamily = (e) => {
     setfontfamily(e.target.value);
   };
-
+  const handlePopoverClick = (e) => {
+    setclickpopover(e.currentTarget);
+  };
+  const handlePopoverClose = () => {
+    setclickpopover(null);
+  };
+  const handlesketchcolor = (color) => {
+    setValues(color.hex);
+  };
+  console.log(values);
   const handleboxblur = (e, newValue) => {
     setboxblur(newValue);
   };
   const handleboxopacity = (e, newValue) => {
     setboxopacity(newValue);
   };
-
   const handlemodalblur = (e, newValue) => {
     setmodalblur(newValue);
   };
-
   const handlemodalopacity = (e, newValue) => {
     setmodalopacity(newValue);
   };
+
+  const open = Boolean(clickpopover);
+  const id = open ? "simple-popover" : undefined;
 
   return (
     <>
@@ -191,7 +201,7 @@ export const UiMain = () => {
           Customized theme to according your requirement.
         </Typography>
 
-        <Box sx={{ width: "100%" }}>
+        <Box>
           <Box
             sx={{
               borderBottom: 1,
@@ -199,8 +209,8 @@ export const UiMain = () => {
             }}
           >
             <Tabs
-              value={value}
-              onChange={handleChange}
+              value={tabvalue}
+              onChange={handleChangeTabs}
               aria-label="basic tabs example"
             >
               <Tab
@@ -220,7 +230,7 @@ export const UiMain = () => {
               />
             </Tabs>
           </Box>
-          <TabPanel value={value} index={0}>
+          <TabPanel value={tabvalue} index={0}>
             <Grid container>
               <Grid item xs={5}>
                 <Grid container columns={5}>
@@ -237,7 +247,6 @@ export const UiMain = () => {
                       </>
                     );
                   })}
-
                   <div className="button-style-div">
                     <Typography
                       sx={{
@@ -302,14 +311,40 @@ export const UiMain = () => {
                     >
                       Shroud/light box color
                     </Typography>
-                    <TextField
-                      size="small"
-                      sx={{
-                        width: "362px",
-                        marginLeft: "0.5em",
-                        borderColor: "rgba(0,0,0,.08)",
-                      }}
-                    />
+                    <div className="light-box-div">
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <div
+                          className="box-color-div"
+                          style={{ backgroundColor: `${values}` }}
+                          onClick={handlePopoverClick}
+                        ></div>
+                        <p
+                          style={{
+                            marginTop: "9px",
+                            marginLeft: "7px",
+                            fontSize: "14px",
+                            color: "gray",
+                          }}
+                        >
+                          {values}
+                        </p>
+                      </div>
+                      <Popover
+                        id={id}
+                        open={open}
+                        anchorEl={clickpopover}
+                        onClose={handlePopoverClose}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "left",
+                        }}
+                      >
+                        <SketchPicker
+                          color={values}
+                          onChange={(e) => handlesketchcolor(e)}
+                        />
+                      </Popover>
+                    </div>
                   </div>
                   <div className="light-box-blur">
                     <Typography
@@ -435,194 +470,199 @@ export const UiMain = () => {
                 <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
                   Preview
                 </Typography>
-                <div
-                  className="preview-box"
-                  style={{
-                    filter: `blur(${boxblur}px)`,
-                    opacity: boxopacity / 100,
-                  }}
-                ></div>
-
-                <div
-                  className="inner-preview-box"
-                  style={{
-                    backgroundColor: colors[5].color,
-                    filter: `blur(${modalblur}px)`,
-                    opacity: modalopacity / 100,
-                  }}
-                >
-                  <Typography
-                    sx={{ fontWeight: "bold", marginTop: "-10px" }}
-                    style={{ color: colors[0].color, fontFamily: fontfamily }}
-                  >
-                    Net Promotor Score
-                  </Typography>
+                <div className="main-preview-box">
                   <div
+                    className="preview-box"
                     style={{
-                      width: "23px",
-                      height: "23px",
-                      backgroundColor: "#d6d6d6",
-                      marginLeft: "465px",
-                      marginTop: "-25px",
-                      color: colors[9].color,
+                      backgroundColor: `${values}`,
+                      filter: `blur(${boxblur}px)`,
+                      opacity: boxopacity / 100,
                     }}
-                  >
-                    <CloseOutlinedIcon></CloseOutlinedIcon>
-                  </div>
-                  <Typography
-                    sx={{ fontSize: "14px", marginTop: "10px" }}
-                    style={{ color: colors[1].color, fontFamily: fontfamily }}
-                  >
-                    On a scale from 0-10, How likely are you to recommend
-                    userlove to a friend or colleague?
-                  </Typography>
-                  <div className="rating-value">
-                    {[...Array(6).keys()].map((data, index) => {
-                      return (
-                        <p
-                          className="data-value"
-                          style={{
-                            backgroundColor: colors[2].color,
-                            fontFamily: fontfamily,
-                          }}
-                        >
-                          {index + 1}
-                        </p>
-                      );
-                    })}
-                    {[...Array(2).keys()].map((data, index) => {
-                      return (
-                        <p
-                          className="data-value"
-                          style={{
-                            backgroundColor: colors[3].color,
-                            fontFamily: fontfamily,
-                          }}
-                        >
-                          {index + 7}
-                        </p>
-                      );
-                    })}
-                    {[...Array(2).keys()].map((data, index) => {
-                      return (
-                        <p
-                          className="data-value"
-                          style={{
-                            backgroundColor: colors[4].color,
-                            fontFamily: fontfamily,
-                          }}
-                        >
-                          {index + 9}
-                        </p>
-                      );
-                    })}
-                  </div>
-                  <p
+                  ></div>
+                  <div
+                    className="inner-preview-box"
                     style={{
-                      fontSize: "13px",
-                      marginTop: "-9px",
-                      marginLeft: "5px",
-                      color: colors[1].color,
-                      fontFamily: fontfamily,
+                      backgroundColor: colors[5].color,
+                      filter: `blur(${modalblur}px)`,
+                      opacity: modalopacity / 100,
                     }}
                   >
-                    Not Likely
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      marginLeft: "400px",
-                      marginTop: "-35px",
-                      color: colors[1].color,
-                      fontFamily: fontfamily,
-                    }}
-                  >
-                    Very Likely
-                  </p>
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      marginLeft: "280px",
-                    }}
-                    style={{
-                      fontFamily: fontfamily,
-                      backgroundColor:
-                        buttonstyle === "filled" ||
-                        buttonstyle === "filled/outline"
-                          ? colors[7].color
-                          : "transparent",
-                      border: `1px solid ${
-                        buttonstyle === "filled" ||
-                        buttonstyle === "filled/outline"
-                          ? colors[7].color
-                          : colors[6].color
-                      }`,
-                      color:
-                        buttonstyle === "filled" ||
-                        buttonstyle === "filled/outline"
-                          ? "white"
-                          : colors[6].color,
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    sx={{ marginLeft: "10px" }}
-                    style={{
-                      fontFamily: fontfamily,
-                      backgroundColor:
-                        buttonstyle === "filled" ||
-                        buttonstyle === "outline/filled"
-                          ? colors[6].color
-                          : "transparent",
-                      border: `1px solid ${
-                        buttonstyle === "filled" ||
-                        buttonstyle === "outline/filled"
-                          ? colors[6].color
-                          : colors[6].color
-                      }`,
-                      color:
-                        buttonstyle === "filled" ||
-                        buttonstyle === "outline/filled"
-                          ? "white"
-                          : colors[6].color,
-                    }}
-                  >
-                    Submit
-                  </Button>
-                </div>
-                <div className="company-name-div">
-                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <Typography
+                      sx={{ fontWeight: "bold", marginTop: "-10px" }}
+                      style={{ color: colors[0].color, fontFamily: fontfamily }}
+                    >
+                      Net Promotor Score
+                    </Typography>
+                    <div
+                      style={{
+                        width: "23px",
+                        height: "23px",
+                        backgroundColor: "#d6d6d6",
+                        marginLeft: "465px",
+                        marginTop: "-25px",
+                        color: colors[9].color,
+                      }}
+                    >
+                      <CloseOutlinedIcon></CloseOutlinedIcon>
+                    </div>
+                    <Typography
+                      sx={{ fontSize: "14px", marginTop: "10px" }}
+                      style={{ color: colors[1].color, fontFamily: fontfamily }}
+                    >
+                      On a scale from 0-10, How likely are you to recommend
+                      userlove to a friend or colleague?
+                    </Typography>
+                    <div className="rating-value">
+                      {[...Array(6).keys()].map((data, index) => {
+                        return (
+                          <p
+                            className="data-value"
+                            style={{
+                              borderColor: colors[2].color,
+                              backgroundColor: colors[2].color,
+                              fontFamily: fontfamily,
+                            }}
+                          >
+                            {index + 1}
+                          </p>
+                        );
+                      })}
+                      {[...Array(2).keys()].map((data, index) => {
+                        return (
+                          <p
+                            className="data-value"
+                            style={{
+                              borderColor: colors[3].color,
+                              backgroundColor: colors[3].color,
+                              fontFamily: fontfamily,
+                            }}
+                          >
+                            {index + 7}
+                          </p>
+                        );
+                      })}
+                      {[...Array(2).keys()].map((data, index) => {
+                        return (
+                          <p
+                            className="data-value"
+                            style={{
+                              borderColor: colors[4].color,
+                              backgroundColor: colors[4].color,
+                              fontFamily: fontfamily,
+                            }}
+                          >
+                            {index + 9}
+                          </p>
+                        );
+                      })}
+                    </div>
                     <p
                       style={{
                         fontSize: "13px",
-                        marginLeft: "360px",
-                        marginTop: "0px",
+                        marginTop: "-9px",
+                        marginLeft: "5px",
+                        color: colors[1].color,
                         fontFamily: fontfamily,
                       }}
                     >
-                      Powered by
+                      Not Likely
                     </p>
                     <p
                       style={{
                         fontSize: "13px",
-                        marginTop: "0px",
-                        marginLeft: "3px",
-                        color: colors[8].color,
+                        marginLeft: "400px",
+                        marginTop: "-35px",
+                        color: colors[1].color,
+                        fontFamily: fontfamily,
                       }}
                     >
-                      Userlove
+                      Very Likely
                     </p>
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        marginLeft: "280px",
+                      }}
+                      style={{
+                        fontFamily: fontfamily,
+                        backgroundColor:
+                          buttonstyle === "filled" ||
+                          buttonstyle === "filled/outline"
+                            ? colors[7].color
+                            : "transparent",
+                        border: `1px solid ${
+                          buttonstyle === "filled" ||
+                          buttonstyle === "filled/outline"
+                            ? colors[7].color
+                            : colors[7].color
+                        }`,
+                        color:
+                          buttonstyle === "filled" ||
+                          buttonstyle === "filled/outline"
+                            ? "white"
+                            : colors[7].color,
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      sx={{ marginLeft: "10px" }}
+                      style={{
+                        fontFamily: fontfamily,
+                        backgroundColor:
+                          buttonstyle === "filled" ||
+                          buttonstyle === "outline/filled"
+                            ? colors[6].color
+                            : "transparent",
+                        border: `1px solid ${
+                          buttonstyle === "filled" ||
+                          buttonstyle === "outline/filled"
+                            ? colors[6].color
+                            : colors[6].color
+                        }`,
+                        color:
+                          buttonstyle === "filled" ||
+                          buttonstyle === "outline/filled"
+                            ? "white"
+                            : colors[6].color,
+                      }}
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                  <div className="company-name-div">
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <p
+                        style={{
+                          fontSize: "13px",
+                          marginLeft: "360px",
+                          marginTop: "0px",
+                          fontFamily: fontfamily,
+                        }}
+                      >
+                        Powered by
+                      </p>
+                      <p
+                        style={{
+                          fontSize: "13px",
+                          marginTop: "0px",
+                          marginLeft: "3px",
+                          color: colors[8].color,
+                        }}
+                      >
+                        Userlove
+                      </p>
+                    </div>
                   </div>
                 </div>
               </Grid>
             </Grid>
           </TabPanel>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={tabvalue} index={1}>
             Product tour
           </TabPanel>
-          <TabPanel value={value} index={2}>
+          <TabPanel value={tabvalue} index={2}>
             Checklist
           </TabPanel>
         </Box>
